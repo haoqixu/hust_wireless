@@ -6,7 +6,7 @@ import re
 
 
 parser = argparse.ArgumentParser(
-        description='a cli tool to login HUST_WIRELESS without Web Browsers')
+        description='a cli tool to login in HUST_WIRELESS without Web Browsers')
 # options
 parser.add_argument(
         '-u', '--username', metavar='username', help='specify a username')
