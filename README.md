@@ -5,9 +5,9 @@ This is a simple comand-line tool to login in HUST\_WIRELESS **without a Web Bro
 
 THIRD-PARTY DEPENDANCIES
 ------------------------
-This simple tool is written in python using these librarys:
+This simple tool is written in python using these libraries:
 
-* REQUESTS - Dealing with HTTP requests
+* requests - Dealing with HTTP requests
 
 
 USAGE
