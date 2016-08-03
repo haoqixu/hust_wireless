@@ -1,27 +1,27 @@
 #!/bin/env python
 # -*- coding: UTF-8 -*-
+from __future__ import unicode_literals  # noqa
+
+import re
+import sys
 import argparse
 import getpass
 import requests
-import sys
-import re
-# import keyword
 
 
-description = 'Login in HUST_WIRELESS without web browsers'
+parser = argparse.ArgumentParser(
+    description='Login in HUST_WIRELESS without web browsers')
 
 # a list of (args, kwargs)
-options = (
+options = [
     (('-u', '--username'), {'metavar': 'username'}),
     (('-p', '--password'), {'metavar': 'password'}),
     (('-q', '--quiet'), {
         'action': 'store_true',
         'help': "don't print to stdout"}),
-)
-
-parser = argparse.ArgumentParser(description=description)
-for opt in options:
-    parser.add_argument(*opt[0], **opt[1])
+]
+for args, kwargs in options:
+    parser.add_argument(*args, **kwargs)
 args = parser.parse_args()
 
 
@@ -32,7 +32,6 @@ except Exception:
     sys.exit()
 
 if result.text.find('eportal') != -1:
-
     try:
         input = raw_input
     except NameError:
@@ -41,27 +40,27 @@ if result.text.find('eportal') != -1:
     password = args.password if args.password else getpass.getpass()
 
     pattarn = re.compile(r"href=.*?\?(.*?)'")
-    params = pattarn.findall(result.text)
+    query_str = pattarn.findall(result.text)
 
-    url = (
-            'http://192.168.50.3:8080/eportal/userV2.do?'
-            'method=login&param=true&' + params[0])
-
+    url = 'http://192.168.50.3:8080/eportal/InterFace.do?method=login'
     post_data = {
-            'username': username,
-            'pwd': password
-            }
+        'userId': username,
+        'password': password,
+        'queryString': query_str,
+        'service': '',
+        'operatorPwd': '',
+        'validcode': '',
+    }
+    responce = requests.request('POST', url, data=post_data)
+    responce.encoding = 'UTF-8'
+    res_json = responce.json()
 
-    result = requests.request('POST', url, data=post_data)
-    if result.text.find('认证失败') != -1:
-        pattarn = re.compile(r"(认证失败.*?)(?:'|\")")
-        login_res = pattarn.findall(result.text)
-        print(login_res[0])
+    if res_json['result'] == 'fail':
+        print(res_json['message'])
     else:
-        print('Successfully Login In')
+        print('认证成功')
 
 elif result.text.find('baidu') != -1:
-    print('You are already logged in')
-
+    print('已在线')
 else:
     print("Opps, something goes wrong!")
