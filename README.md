@@ -3,7 +3,7 @@ HUST_WIRELESS Login Tool
 This is a simple comand-line tool to login in HUST\_WIRELESS **without a Web Browser**
 
 
-THIRD-PARTY DEPENDANCIES
+THIRD-PARTY DEPENDENCIES
 ------------------------
 This simple tool is written in python using these libraries:
 

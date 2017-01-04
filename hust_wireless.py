@@ -28,7 +28,7 @@ args = parser.parse_args()
 try:
     result = requests.get('http://www.baidu.com')
 except Exception:
-    print('Failed to connecte test webside!')
+    print('Failed to connect test website!')
     sys.exit()
 
 if result.text.find('eportal') != -1:
